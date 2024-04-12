@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Background Color</title>
+  <script>
+    // Create a <style> element
+    const style = document.createElement('style');
+
+    // Set the content of the <style> element to contain the CSS rules
+    style.textContent = `
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        background-color: #f0f0f0;
+      }
+
+      #btn {
+        padding: 10px 20px;
+        background-color: #ffffff;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+      }
+    `;
+
+    // Append the <style> element to the <head> of the document
+    document.head.appendChild(style);
+  </script>
+</head>
+<body>
+  <button id="btn">Stop</button>
+  <script>
+    const button = document.getElementById('btn');
+    let intervalId;
+
+    // Function to generate a random background color
+    function randomColor() {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      return `rgb(${r},${g},${b})`;
+    }
+
+    // Function to update the background color
+    function updateBackgroundColor() {
+      document.body.style.backgroundColor = randomColor();
+    }
+
+    // Start updating background color every 2 seconds
+    intervalId = setInterval(updateBackgroundColor, 0000);
+
+    // Event listener for the button click
+    button.addEventListener('click', function() {
+      clearInterval(intervalId); // Stop the interval
+      const currentColor = document.body.style.backgroundColor;
+      const rgbaValue = getRGBA(currentColor);
+      button.textContent = rgbaValue;
+    });
+
+    // Function to get the RGBA value from a color string
+    function getRGBA(colorString) {
+      const values = colorString.match(/\d+/g);
+      const rgba = `rgba(${values[0]}, ${values[1]}, ${values[2]}, 1)`;
+      return rgba;
+    }
+  </script>
+</body>
+</html>

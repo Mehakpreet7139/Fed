@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+</head>
+<body >
+    <script>
+    var style = document.createElement('style');
+        style.type = 'text/css';
+        
+        // Define your CSS rules as a string
+        var css =  `
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('bgg.png'); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        .item img {
+            width: 100px;
+            height: auto;
+            margin-right: 10px;
+        }
+        .item-info {
+            flex-grow: 1;
+        }
+        .quantity {
+            display: flex;
+            align-items: center;
+        }
+        .quantity button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .quantity button:hover {
+            background-color: #0056b3;
+        }
+        .quantity input {
+            width: 40px;
+            text-align: center;
+        }
+    `;
+    if (style.styleSheet) {
+            style.styleSheet.cssText = css;
+        } else {
+            style.appendChild(document.createTextNode(css));
+        }
+        
+    
+    // Append the style element to the head of the document
+    document.head.appendChild(style);
+        var containerDiv = document.createElement("div");
+        containerDiv.classList.add("container");
+
+        var h1Element = document.createElement("h1");
+        h1Element.textContent = "Shopping Cart";
+
+        
+        var itemsContainerDiv = document.createElement("div");
+        itemsContainerDiv.id = "items-container";
+
+        
+        var hrElement = document.createElement("hr");
+
+        
+        var h2Element = document.createElement("h2");
+        h2Element.textContent = "Total Items in Cart: ";
+
+        
+        var spanElement = document.createElement("span");
+        spanElement.id = "totalItems";
+        spanElement.textContent = "0";
+
+        
+        containerDiv.appendChild(h1Element);
+        containerDiv.appendChild(itemsContainerDiv);
+        containerDiv.appendChild(hrElement);
+        h2Element.appendChild(spanElement);
+        containerDiv.appendChild(h2Element);
+
+        
+        document.body.appendChild(containerDiv);
+        document.addEventListener('DOMContentLoaded', function() {
+            const itemsContainer = document.getElementById('items-container');
+            const totalItemsSpan = document.getElementById('totalItems');
+            let totalItems = 0;
+
+            const items = [
+                { name: 'Iphone 15 Pro Max', price: 'Rs 159900', image: 'iph.jpg' },
+                { name: 'Versace Watch', price: 'Rs 16990', image: 'watch.jpeg' },
+                { name: 'Perfume', price: 'Rs 18228', image: 'perfume.jpg' }
+            ];
+
+            items.forEach((item, index) => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('item');
+
+                itemDiv.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="item-info">
+                        <h2>${item.name}</h2>
+                        <p>Price: ${item.price}</p>
+                        <div class="quantity">
+                            <button class="decrement">-</button>
+                            <input type="text" value="0" id="quantity-${index}">
+                            <button class="increment">+</button>
+                        </div>
+                    </div>
+                `;
+
+                itemsContainer.appendChild(itemDiv);
+
+                const quantityInput = document.getElementById(`quantity-${index}`);
+                const decrementButton = itemDiv.querySelector('.decrement');
+                const incrementButton = itemDiv.querySelector('.increment');
+
+                decrementButton.addEventListener('click', function() {
+                    decreaseQuantity(quantityInput);
+                });
+
+                incrementButton.addEventListener('click', function() {
+                    increaseQuantity(quantityInput);
+                });
+
+                quantityInput.addEventListener('input', function() {
+                    updateTotalItems();
+                });
+            });
+
+            function increaseQuantity(input) {
+                let value = parseInt(input.value);
+                input.value = ++value;
+                updateTotalItems();
+            }
+
+            function decreaseQuantity(input) {
+                let value = parseInt(input.value);
+                if (value > 0) {
+                    input.value = --value;
+                    updateTotalItems();
+                }
+            }
+
+            function updateTotalItems() {
+                totalItems = 0;
+                document.querySelectorAll('.quantity input').forEach(input => {
+                    totalItems += parseInt(input.value);
+                });
+                totalItemsSpan.textContent = totalItems;
+            }
+        });
+    </script>
+</body>
+</html>
